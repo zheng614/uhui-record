@@ -1,0 +1,64 @@
+<!-- 当日账单：自定义导航栏（左上角返回）+ 当天明细 -->
+<view class="page page--day theme-{{themeKey}}">
+  <!-- 自定义导航栏 -->
+  <view class="navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar__inner" style="height: {{navHeight}}px;">
+      <view class="navbar__back" bindtap="onBack">
+        <text class="navbar__arrow">‹</text>
+        <text class="navbar__back-text">返回</text>
+      </view>
+      <text class="navbar__title">{{date}}</text>
+      <view class="navbar__placeholder"></view>
+    </view>
+  </view>
+
+  <!-- 当天合计 -->
+  <view class="day-summary">
+    <text class="day-summary__date">{{dateLabel}}</text>
+    <view class="day-summary__row">
+      <text class="day-summary__label">总价</text>
+      <text class="day-summary__value num">¥{{summary.totalText}}</text>
+      <text class="day-summary__label">优惠</text>
+      <text class="day-summary__value day-summary__value--red num">¥{{summary.discountText}}</text>
+      <text class="day-summary__label">实付</text>
+      <text class="day-summary__value num">¥{{summary.paidText}}</text>
+    </view>
+  </view>
+
+  <block wx:if="{{!empty}}">
+    <view class="bill-list">
+      <view
+        class="bill"
+        wx:for="{{bills}}"
+        wx:key="id"
+        hover-class="bill--hover"
+        data-id="{{item.id}}"
+        bindtap="onBillTap"
+      >
+        <view class="bill__left">
+          <view class="bill__title-row">
+            <text class="bill__tag">{{item.categoryName}}</text>
+            <text class="bill__title">{{item.title}}</text>
+          </view>
+        </view>
+        <view class="bill__right">
+          <view class="bill__amounts">
+            <text class="amount-total">¥{{item.totalText}}</text>
+            <text class="bill__rate-tag" wx:if="{{item.rateTag}}">{{item.rateTag}}</text>
+            <text class="amount-discount" wx:if="{{item.hasDiscount}}">-¥{{item.discountText}}</text>
+            <text class="amount-paid">实付 ¥{{item.paidText}}</text>
+          </view>
+          <text class="bill__action bill__action--danger" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="day-add" bindtap="onCreate">＋ 这天再记一笔</view>
+  </block>
+
+  <view class="empty" wx:else>
+    <view class="empty__icon">🗓</view>
+    <text class="empty__text">这天还没有账单</text>
+    <view class="day-add day-add--empty" bindtap="onCreate">＋ 补记一笔</view>
+  </view>
+</view>

@@ -1,0 +1,192 @@
+/* 首页样式 */
+.page--index {
+  padding-bottom: 200rpx; /* 给悬浮按钮留出空间 */
+}
+
+.section {
+  margin-top: 24rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32rpx 4rpx 16rpx;
+}
+
+.section-head__title {
+  font-size: 26rpx;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.section-head__action {
+  font-size: 24rpx;
+  color: var(--brand, #0a8f5b);
+  padding: 4rpx 8rpx;
+}
+
+/* ---------- 账单列表 ---------- */
+.bill-list {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.bill {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f2f4f6;
+}
+
+.bill:last-child {
+  border-bottom: none;
+}
+
+.bill--hover {
+  background-color: #fafbfc;
+}
+
+.bill__left {
+  flex: 1;
+  min-width: 0;
+  padding-right: 16rpx;
+}
+
+.bill__title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.bill__title {
+  font-size: 30rpx;
+  color: #1f2328;
+  font-weight: 500;
+  max-width: 300rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bill__tag {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--brand, #0a8f5b);
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+  margin-right: 12rpx;
+}
+
+/* 折扣角标：仅折扣单显示，例如「8折」 */
+.bill__rate-tag {
+  flex-shrink: 0;
+  font-size: 20rpx;
+  color: var(--brand, #0a8f5b);
+  background-color: var(--brand-soft, #e8f5ee);
+  border-radius: 6rpx;
+  padding: 2rpx 8rpx;
+  margin-left: 10rpx;
+}
+
+.bill__date {
+  font-size: 22rpx;
+  color: #a2a8b3;
+  font-variant-numeric: tabular-nums;
+}
+
+.bill__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.bill__amounts {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.bill__total {
+  font-size: 32rpx;
+}
+
+.bill__actions {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.bill__action {
+  font-size: 22rpx;
+  color: #8a8f99;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background-color: #f4f6f8;
+  margin-left: 12rpx;
+}
+
+.bill__action--danger {
+  color: #e5484d;
+  background-color: #fdecec;
+}
+
+/* ---------- 底部操作 ---------- */
+.footer-actions {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0 20rpx;
+}
+
+.footer-actions__danger {
+  font-size: 24rpx;
+  color: #b0b5be;
+  padding: 12rpx 32rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid #e5e8ec;
+}
+
+/* ---------- 空状态补充 ---------- */
+.empty__text--sub {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #b0b5be;
+}
+
+/* ---------- 悬浮按钮 ---------- */
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 60rpx;
+  display: flex;
+  align-items: center;
+  height: 96rpx;
+  padding: 0 36rpx;
+  border-radius: 999rpx;
+  background-color: var(--brand, #0a8f5b);
+  box-shadow: 0 10rpx 24rpx rgba(17, 24, 39, 0.18);
+  z-index: 20;
+}
+
+.fab--hover {
+  background-color: var(--brand-dark, #087a4d);
+}
+
+.fab__plus {
+  color: #ffffff;
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.fab__text {
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+

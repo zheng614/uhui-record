@@ -1,0 +1,202 @@
+/**
+ * 全局样式
+ * 设计原则：浅灰背景 + 白色卡片，主色由「我的 → 主题色」决定（CSS 变量 --brand）。
+ * 改动主题时只需要在页面根节点加 `theme-xxx` 类名，无需改各页样式。
+ */
+
+page {
+  background-color: #f4f6f8;
+  color: #1f2328;
+  font-size: 28rpx;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  /* 默认主题（森林绿），页面通过 theme-xxx 覆盖 */
+  --brand: #0a8f5b;
+  --brand-dark: #087a4d;
+  --brand-soft: #e8f5ee;
+}
+
+/* ---------- 主题配色 ---------- */
+.theme-green {
+  --brand: #0a8f5b;
+  --brand-dark: #087a4d;
+  --brand-soft: #e8f5ee;
+}
+
+.theme-blue {
+  --brand: #2f6fed;
+  --brand-dark: #255fd1;
+  --brand-soft: #e9f0ff;
+}
+
+.theme-purple {
+  --brand: #7c5cff;
+  --brand-dark: #6a4ae6;
+  --brand-soft: #f0ecff;
+}
+
+.theme-orange {
+  --brand: #f5741a;
+  --brand-dark: #d9610c;
+  --brand-soft: #fff1e6;
+}
+
+.theme-pink {
+  --brand: #e8517f;
+  --brand-dark: #d13a68;
+  --brand-soft: #ffe9f0;
+}
+
+.theme-ink {
+  --brand: #2b2f36;
+  --brand-dark: #1c1f24;
+  --brand-soft: #eceef1;
+}
+
+view,
+text,
+input,
+textarea,
+picker,
+scroll-view {
+  box-sizing: border-box;
+}
+
+/* ---------- 布局 ---------- */
+.page {
+  padding: 20rpx 24rpx 60rpx;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.card + .card {
+  margin-top: 20rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row--between {
+  justify-content: space-between;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- 文本 ---------- */
+.text-muted {
+  color: #8a8f99;
+}
+
+.text-small {
+  font-size: 24rpx;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 数字统一使用等宽数字，对齐更整齐 */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ---------- 金额 ---------- */
+/* 总价：黑色、字号最大 */
+.amount-total {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1f2328;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 优惠：大红、加粗、比实付大一号 */
+.amount-discount {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #ff2b2b;
+  margin-left: 10rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 实付：与总价同色，字号略小 */
+.amount-paid {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #1f2328;
+  margin-left: 10rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.btn--primary {
+  background-color: var(--brand, #0a8f5b);
+  color: #ffffff;
+}
+
+.btn--primary:active {
+  background-color: var(--brand-dark, #087a4d);
+}
+
+.btn--ghost {
+  background-color: #f2f4f6;
+  color: #4b5563;
+}
+
+.btn--danger {
+  background-color: #fdecec;
+  color: #e5484d;
+}
+
+/* ---------- 空状态 ---------- */
+.empty {
+  padding: 100rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty__icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background-color: #eef1f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty__text {
+  font-size: 26rpx;
+  color: #a2a8b3;
+}

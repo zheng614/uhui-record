@@ -1,0 +1,18 @@
+# 微信开发者工具本地私有配置（含本机 AppID、编译偏好，不进仓库）
+project.private.config.json
+
+# 自己导出的账单与截图
+*.csv
+shots/
+
+# 依赖与构建产物
+node_modules/
+miniprogram_npm/
+dist/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

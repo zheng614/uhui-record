@@ -1,0 +1,69 @@
+<!-- 首页：合计 + 筛选 + 账单明细 -->
+<view class="page page--index theme-{{themeKey}}">
+  <!-- 顶部合计（随筛选联动） -->
+  <summary-card summary="{{summary}}" caption="{{caption}}" />
+
+  <!-- 时间筛选 -->
+  <view class="section">
+    <filter-bar value="{{filter}}" bind:change="onFilterChange" />
+  </view>
+
+  <!-- 列表标题栏 -->
+  <view class="section-head">
+    <text class="section-head__title">账单明细</text>
+    <text class="section-head__action" bindtap="onExport">导出 CSV</text>
+  </view>
+
+  <block wx:if="{{!empty}}">
+    <view class="bill-list">
+      <view
+        wx:for="{{bills}}"
+        wx:key="id"
+        class="bill"
+        hover-class="bill--hover"
+        data-id="{{item.id}}"
+        bindtap="onBillTap"
+      >
+        <view class="bill__left">
+          <!-- 分类在前更醒目，备注在后 -->
+          <view class="bill__title-row">
+            <text class="bill__tag">{{item.categoryName}}</text>
+            <text class="bill__title">{{item.title}}</text>
+          </view>
+          <text class="bill__date">{{item.date}}</text>
+        </view>
+
+        <view class="bill__right">
+          <!-- 金额规则：总价黑色最大，优惠大红，实付与总价同色但字号略小，依次跟在总价后方 -->
+          <view class="bill__amounts">
+            <text class="amount-total bill__total">¥{{item.totalText}}</text>
+            <text class="bill__rate-tag" wx:if="{{item.rateTag}}">{{item.rateTag}}</text>
+            <text class="amount-discount" wx:if="{{item.hasDiscount}}">-¥{{item.discountText}}</text>
+            <text class="amount-paid">实付 ¥{{item.paidText}}</text>
+          </view>
+
+          <view class="bill__actions">
+            <text class="bill__action" catchtap="onEdit" data-id="{{item.id}}">编辑</text>
+            <text class="bill__action bill__action--danger" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-actions">
+      <text class="footer-actions__danger" bindtap="onClearAll">清空全部账单</text>
+    </view>
+  </block>
+
+  <view class="empty" wx:else>
+    <view class="empty__icon">🧾</view>
+    <text class="empty__text">当前范围还没有账单</text>
+    <text class="empty__text empty__text--sub">点击右下角「记一笔」开始记录</text>
+  </view>
+</view>
+
+<!-- 悬浮记账按钮 -->
+<view class="fab theme-{{themeKey}}" bindtap="onCreate" hover-class="fab--hover">
+  <text class="fab__plus">＋</text>
+  <text class="fab__text">记一笔</text>
+</view>

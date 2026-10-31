@@ -1,0 +1,40 @@
+# GitHub Actions 工作流模板
+# ------------------------------------------------------------------
+# 把本文件复制到 .github/workflows/ci.yml（保持文件名 ci.yml）即可启用 CI。
+# 之所以单独放一份在 docs/ 下：
+#   通过 API 提交 .github/workflows/ 下的文件需要 token 具备 `workflow` 权限，
+#   而普通 `repo` 权限的 token 会被 GitHub 以 404 拒绝，所以这里留一份可复制的原文，
+#   方便任何人（或在网页端手动新建文件）一键启用。
+#
+# 启用后：每次 push 到 main、以及每个 PR，都会自动跑 `node scripts/check.js`。
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: 仓库自检
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 准备 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 自检（JSON / JS 语法、页面完整性、隐私红线）
+        run: node scripts/check.js

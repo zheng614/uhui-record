@@ -1,0 +1,164 @@
+/* 统计页样式 */
+.page--stats {
+  padding-bottom: 60rpx;
+}
+
+.section {
+  margin-top: 24rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 32rpx 4rpx 16rpx;
+}
+
+.section-head__title {
+  font-size: 26rpx;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.section-head__note {
+  font-size: 22rpx;
+  color: #a2a8b3;
+}
+
+/* ---------- 分类分组卡片 ---------- */
+.group {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 24rpx 16rpx;
+}
+
+.group__title {
+  display: flex;
+  align-items: center;
+}
+
+.group__name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2328;
+}
+
+.group__count {
+  font-size: 20rpx;
+  color: #8a8f99;
+  background-color: #f4f6f8;
+  border-radius: 8rpx;
+  padding: 2rpx 10rpx;
+  margin-left: 12rpx;
+}
+
+.group__share {
+  font-size: 22rpx;
+  color: #0a8f5b;
+  margin-right: 16rpx;
+}
+
+.group__toggle {
+  font-size: 22rpx;
+  color: #a2a8b3;
+}
+
+/* 分类合计行：浅灰底 + 加粗数字，与普通账单条目形成区分 */
+.group__sum {
+  display: flex;
+  align-items: center;
+  background-color: #f6f7f9;
+  padding: 18rpx 24rpx;
+  border-top: 1rpx solid #eef0f3;
+  border-bottom: 1rpx solid #eef0f3;
+}
+
+.group__sum-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.group__sum-label {
+  font-size: 20rpx;
+  color: #8a8f99;
+  margin-bottom: 4rpx;
+}
+
+.group__sum-value {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1f2328;
+  font-variant-numeric: tabular-nums;
+}
+
+.group__sum-value--discount {
+  color: #e5484d;
+}
+
+.group__sum-value--paid {
+  color: #4b5563;
+}
+
+/* ---------- 明细 ---------- */
+.group__items {
+  padding: 4rpx 0;
+}
+
+.bill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f7f8fa;
+}
+
+.bill:last-child {
+  border-bottom: none;
+}
+
+.bill--hover {
+  background-color: #fafbfc;
+}
+
+.bill__left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding-right: 16rpx;
+}
+
+.bill__title {
+  font-size: 26rpx;
+  color: #3f4550;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bill__date {
+  font-size: 20rpx;
+  color: #a2a8b3;
+  margin-top: 4rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.bill__amounts {
+  display: flex;
+  align-items: baseline;
+  flex-shrink: 0;
+}
+
+.bill__total {
+  font-size: 28rpx;
+}

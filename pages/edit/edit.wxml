@@ -1,0 +1,182 @@
+<!-- 记一笔 / 编辑账单 -->
+<view class="page page--edit theme-{{themeKey}}">
+  <view class="card form">
+    <!-- 日期 -->
+    <view class="form__row">
+      <text class="form__label">日期</text>
+      <picker class="form__picker" mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="form__value form__value--picker">
+          <text class="num">{{date}}</text>
+          <text class="form__arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 总价 -->
+    <view class="form__row">
+      <text class="form__label">总价</text>
+      <view class="form__inline">
+        <text class="form__unit">¥</text>
+        <input
+          class="form__input"
+          type="digit"
+          value="{{totalInput}}"
+          placeholder="0.00"
+          placeholder-class="form__placeholder"
+          bindinput="onTotalInput"
+        />
+      </view>
+    </view>
+
+    <!-- 优惠方式：满减 / 折扣 -->
+    <view class="form__row form__row--column">
+      <text class="form__label">优惠方式</text>
+      <view class="segmented">
+        <view
+          class="segmented__item {{discountType === 'minus' ? 'segmented__item--on' : ''}}"
+          data-type="minus"
+          bindtap="onDiscountTypeChange"
+        >满减（减多少钱）</view>
+        <view
+          class="segmented__item {{discountType === 'rate' ? 'segmented__item--on' : ''}}"
+          data-type="rate"
+          bindtap="onDiscountTypeChange"
+        >折扣（打几折）</view>
+      </view>
+    </view>
+
+    <!-- 满减：输入优惠金额 -->
+    <view class="form__row" wx:if="{{discountType === 'minus'}}">
+      <text class="form__label">优惠金额</text>
+      <view class="form__inline">
+        <text class="form__unit form__unit--discount">-¥</text>
+        <input
+          class="form__input"
+          type="digit"
+          value="{{discountInput}}"
+          placeholder="0.00"
+          placeholder-class="form__placeholder"
+          bindinput="onDiscountInput"
+        />
+      </view>
+    </view>
+
+    <!-- 折扣：输入几折 -->
+    <view class="form__row" wx:if="{{discountType === 'rate'}}">
+      <text class="form__label">折扣</text>
+      <view class="form__inline">
+        <input
+          class="form__input form__input--short"
+          type="digit"
+          value="{{rateInput}}"
+          placeholder="8"
+          placeholder-class="form__placeholder"
+          bindinput="onRateInput"
+        />
+        <text class="form__unit form__unit--after">折</text>
+      </view>
+    </view>
+
+    <!-- 实付 -->
+    <view class="form__row">
+      <view class="form__label-group">
+        <text class="form__label">实付</text>
+        <text class="form__hint" wx:if="{{discountType === 'minus' && !autoPaid}}" bindtap="onRestoreAuto">手动 · 点此恢复</text>
+        <text class="form__hint form__hint--on" wx:if="{{discountType === 'minus' && autoPaid}}">自动计算</text>
+        <text class="form__hint form__hint--on" wx:if="{{discountType === 'rate'}}">按折扣自动计算</text>
+      </view>
+      <view class="form__inline">
+        <text class="form__unit">¥</text>
+        <input
+          class="form__input"
+          type="digit"
+          value="{{paidInput}}"
+          disabled="{{discountType === 'rate'}}"
+          placeholder="0.00"
+          placeholder-class="form__placeholder"
+          bindinput="onPaidInput"
+        />
+      </view>
+    </view>
+
+    <!-- 分类：点开面板可拖动排序、新增、删除 -->
+    <view class="form__row" bindtap="openSheet">
+      <view class="form__label-group">
+        <text class="form__label">分类</text>
+        <text class="form__hint form__hint--warn" wx:if="{{categoryStale}}">原分类已删除，请重新选择</text>
+      </view>
+      <view class="form__value form__value--picker {{categoryStale ? 'form__value--warn' : ''}}">
+        <text>{{categoryName}}</text>
+        <text class="form__arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="form__row form__row--column">
+      <text class="form__label">备注</text>
+      <textarea
+        class="form__textarea"
+        placeholder="写点什么，例如：超市满减、午餐"
+        placeholder-class="form__placeholder"
+        maxlength="60"
+        value="{{note}}"
+        bindinput="onNoteInput"
+        auto-height
+      />
+    </view>
+  </view>
+
+  <!-- 实时算式 -->
+  <view class="preview">
+    <text class="preview__label">算式</text>
+    <text class="preview__text num">{{previewText}}</text>
+  </view>
+
+  <view class="actions">
+    <view class="btn btn--primary" bindtap="onSave">{{isEdit ? '保存修改' : '保存账单'}}</view>
+    <view class="btn btn--danger actions__delete" wx:if="{{isEdit}}" bindtap="onDelete">删除账单</view>
+  </view>
+</view>
+
+<!-- ============ 分类面板：可拖动排序 ============ -->
+<view class="sheet-mask" wx:if="{{sheetVisible}}" bindtap="onSheetMaskTap"></view>
+<view class="sheet theme-{{themeKey}}" wx:if="{{sheetVisible}}" catchtap="noop">
+  <view class="sheet__head">
+    <text class="sheet__title">分类</text>
+    <text class="sheet__tip">拖动 ⠿ 排序 · 点名称选用</text>
+  </view>
+
+  <scroll-view class="sheet__body" scroll-y>
+    <movable-area class="sort-area" style="height: {{sheetAreaHeight}}px;">
+      <movable-view
+        wx:for="{{sortList}}"
+        wx:key="id"
+        class="sort-row {{draggingId === item.id ? 'sort-row--drag' : ''}}"
+        style="height: {{sheetItemPx}}px;"
+        direction="vertical"
+        y="{{item.y}}"
+        inertia="{{false}}"
+        out-of-bounds="{{false}}"
+        damping="{{60}}"
+        data-id="{{item.id}}"
+        bindtouchstart="onSortTouchStart"
+        bindtouchend="onSortTouchEnd"
+        bindchange="onSortChange"
+      >
+        <text class="sort-row__handle">⠿</text>
+        <text class="sort-row__name" catchtap="onSheetPick" data-id="{{item.id}}">{{item.name}}</text>
+        <text
+          class="sort-row__del"
+          catchtap="onSheetDelete"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+        >删除</text>
+      </movable-view>
+    </movable-area>
+  </scroll-view>
+
+  <view class="sheet__foot">
+    <view class="sheet__add" bindtap="onSheetAdd">＋ 新增分类</view>
+    <view class="sheet__done" bindtap="closeSheet">完成</view>
+  </view>
+</view>

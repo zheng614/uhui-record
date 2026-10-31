@@ -1,0 +1,74 @@
+<!-- 统计页：全局合计 + 分类分组统计 -->
+<view class="page page--stats theme-{{themeKey}}">
+  <summary-card summary="{{summary}}" caption="{{caption}}" />
+
+  <view class="section">
+    <filter-bar value="{{filter}}" bind:change="onFilterChange" />
+  </view>
+
+  <view class="section-head">
+    <text class="section-head__title">分类统计</text>
+    <text class="section-head__note">{{categoryCount}} 个分类有记录</text>
+  </view>
+
+  <block wx:if="{{!empty}}">
+    <view class="group" wx:for="{{groups}}" wx:key="categoryId">
+      <!-- 分类标题：点击可折叠 -->
+      <view class="group__head" data-index="{{index}}" bindtap="onToggle">
+        <view class="group__title">
+          <text class="group__name">{{item.name}}</text>
+          <text class="group__count">{{item.count}} 笔</text>
+        </view>
+        <view class="group__title">
+          <text class="group__share">{{item.shareText}}</text>
+          <text class="group__toggle">{{item.collapsed ? '展开' : '收起'}}</text>
+        </view>
+      </view>
+
+      <!-- 分类合计行：浅灰底色，数字加粗 -->
+      <view class="group__sum">
+        <view class="group__sum-item">
+          <text class="group__sum-label">总价合计</text>
+          <text class="group__sum-value">¥{{item.totalText}}</text>
+        </view>
+        <view class="group__sum-item">
+          <text class="group__sum-label">优惠合计</text>
+          <text class="group__sum-value group__sum-value--discount">¥{{item.discountText}}</text>
+        </view>
+        <view class="group__sum-item">
+          <text class="group__sum-label">实付合计</text>
+          <text class="group__sum-value group__sum-value--paid">¥{{item.paidText}}</text>
+        </view>
+      </view>
+
+      <!-- 分类内明细 -->
+      <view class="group__items" wx:if="{{!item.collapsed}}">
+        <view
+          wx:for="{{item.items}}"
+          wx:for-item="bill"
+          wx:key="id"
+          class="bill"
+          hover-class="bill--hover"
+          data-id="{{bill.id}}"
+          bindtap="onBillTap"
+        >
+          <view class="bill__left">
+            <text class="bill__title">{{bill.title}}</text>
+            <text class="bill__date">{{bill.date}}</text>
+          </view>
+          <view class="bill__amounts">
+            <text class="amount-total bill__total">¥{{bill.totalText}}</text>
+            <text class="amount-discount" wx:if="{{bill.hasDiscount}}">-¥{{bill.discountText}}</text>
+            <text class="amount-paid">实付 ¥{{bill.paidText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty" wx:else>
+    <view class="empty__icon">📊</view>
+    <text class="empty__text">当前范围还没有可统计的数据</text>
+  </view>
+</view>
+

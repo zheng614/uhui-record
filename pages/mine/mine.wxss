@@ -1,0 +1,285 @@
+/* 我的：签到、日历、主题、建议 */
+.page--mine {
+  padding-bottom: 60rpx;
+}
+
+/* ---------- 签到卡 ---------- */
+.checkin {
+  background: linear-gradient(135deg, var(--brand, #0a8f5b) 0%, var(--brand-dark, #0a7d4f) 100%);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 8rpx 24rpx rgba(17, 24, 39, 0.16);
+}
+
+.checkin__stats {
+  display: flex;
+  align-items: flex-end;
+}
+
+.checkin__cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkin__value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.checkin__label {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 6rpx;
+}
+
+.checkin__btn {
+  margin-top: 24rpx;
+  height: 80rpx;
+  border-radius: 999rpx;
+  background-color: #ffffff;
+  color: var(--brand, #0a8f5b);
+  font-size: 28rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkin__btn--done {
+  background-color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.checkin__tip {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+/* ---------- 通用卡片标题 ---------- */
+.card__title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f2328;
+}
+
+/* ---------- 日历 ---------- */
+.calendar {
+  margin-top: 20rpx;
+}
+
+.calendar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar__arrow {
+  width: 64rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #6b7280;
+  line-height: 1;
+}
+
+.calendar__title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2328;
+}
+
+.calendar__sum {
+  font-size: 20rpx;
+  color: #a2a8b3;
+  margin-top: 4rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar__week {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.calendar__week-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 22rpx;
+  color: #a2a8b3;
+}
+
+.calendar__grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8rpx;
+}
+
+.calendar__cell {
+  width: 14.285%;
+  height: 96rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+}
+
+.calendar__cell--blank {
+  visibility: hidden;
+}
+
+.calendar__cell--today {
+  background-color: var(--brand-soft, #e8f5ee);
+}
+
+.calendar__day {
+  font-size: 26rpx;
+  color: #1f2328;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 优惠金额：大红、比日期小两号 */
+.calendar__discount {
+  font-size: 18rpx;
+  font-weight: 700;
+  color: #ff2b2b;
+  margin-top: 2rpx;
+  line-height: 1.2;
+}
+
+.calendar__tip {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: #b0b5be;
+  text-align: center;
+}
+
+/* ---------- 主题色 ---------- */
+.theme-card {
+  margin-top: 20rpx;
+}
+
+.theme-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20rpx;
+}
+
+.theme-item {
+  width: 33.33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.theme-item__dot {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-item__check {
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.theme-item__name {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+.theme-item__name--on {
+  color: #1f2328;
+  font-weight: 600;
+}
+
+/* ---------- 提建议 ---------- */
+.suggest {
+  margin-top: 20rpx;
+}
+
+.suggest__input {
+  width: 100%;
+  min-height: 140rpx;
+  margin-top: 16rpx;
+  padding: 20rpx;
+  background-color: #f7f8fa;
+  border-radius: 14rpx;
+  font-size: 26rpx;
+  color: #1f2328;
+}
+
+.suggest__placeholder {
+  color: #b6bbc4;
+}
+
+.suggest__btn {
+  margin-top: 20rpx;
+}
+
+/* button 元素（客服消息按钮）需要清掉微信默认样式，才能和 .btn 一致 */
+button.suggest__btn {
+  width: 100%;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 2.6;
+  padding: 0;
+  border: none;
+}
+
+button.suggest__btn::after {
+  border: none;
+}
+
+.suggest__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14rpx;
+}
+
+.suggest__history {
+  font-size: 20rpx;
+  color: #a2a8b3;
+}
+
+.suggest__clear {
+  font-size: 20rpx;
+  color: #e5484d;
+  padding: 4rpx 10rpx;
+}
+
+.suggest__tip {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: #b0b5be;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.page__foot {
+  display: block;
+  margin-top: 28rpx;
+  text-align: center;
+  font-size: 20rpx;
+  color: #b0b5be;
+}

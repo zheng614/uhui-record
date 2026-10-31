@@ -1,0 +1,333 @@
+/* 表单页样式 */
+.page--edit {
+  padding-bottom: 60rpx;
+}
+
+.form {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  padding: 8rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.form__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 108rpx;
+  border-bottom: 1rpx solid #f2f4f6;
+}
+
+.form__row:last-child {
+  border-bottom: none;
+}
+
+.form__row--column {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 24rpx 0;
+  min-height: auto;
+}
+
+.form__label {
+  font-size: 28rpx;
+  color: #4b5563;
+  flex-shrink: 0;
+}
+
+.form__label-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__hint {
+  font-size: 20rpx;
+  color: #b0b5be;
+  margin-top: 4rpx;
+}
+
+.form__hint--on {
+  color: #0a8f5b;
+}
+
+/* 分类被删除后的警示文案与取值颜色 */
+.form__hint--warn {
+  color: #e5484d;
+}
+
+.form__value--warn {
+  color: #e5484d;
+}
+
+.form__picker {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form__value {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 28rpx;
+  color: #1f2328;
+  min-width: 260rpx;
+  text-align: right;
+}
+
+.form__value--picker {
+  padding: 12rpx 0;
+}
+
+.form__arrow {
+  font-size: 32rpx;
+  color: #c9ced6;
+  margin-left: 12rpx;
+  line-height: 1;
+}
+
+.form__input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+/* 金额输入行：符号 + 输入框贴在一起靠右 */
+.form__inline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+}
+
+.form__unit {
+  font-size: 28rpx;
+  color: #8a8f99;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.form__unit--after {
+  margin-right: 0;
+  margin-left: 8rpx;
+  color: #1f2328;
+  font-size: 28rpx;
+}
+
+.form__unit--discount {
+  color: #ff2b2b;
+}
+
+.form__input--short {
+  flex: 0 0 120rpx;
+  text-align: right;
+}
+
+.form__unit--paid {
+  color: #6b7280;
+}
+
+.form__input {
+  /* 固定宽度 + 右对齐，让「¥」紧跟数字，避免符号被撑到行中间 */
+  flex: 0 0 240rpx;
+  text-align: right;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1f2328;
+  font-variant-numeric: tabular-nums;
+  height: 88rpx;
+}
+
+.form__placeholder {
+  color: #c9ced6;
+  font-weight: 400;
+}
+
+.form__textarea {
+  width: 100%;
+  min-height: 96rpx;
+  margin-top: 16rpx;
+  font-size: 28rpx;
+  color: #1f2328;
+  line-height: 1.6;
+  background-color: #f7f8fa;
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+
+/* ---------- 算式预览 ---------- */
+.preview {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+  padding: 20rpx 24rpx;
+  background-color: #e8f5ee;
+  border-radius: 16rpx;
+}
+
+.preview__label {
+  font-size: 22rpx;
+  color: #0a8f5b;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.preview__text {
+  font-size: 26rpx;
+  color: #0a8f5b;
+  font-weight: 600;
+}
+
+/* ---------- 操作按钮 ---------- */
+.actions {
+  margin-top: 40rpx;
+}
+
+.actions__delete {
+  margin-top: 20rpx;
+}
+
+/* ---------- 优惠方式切换 ---------- */
+.segmented {
+  display: flex;
+  margin-top: 16rpx;
+  background-color: #f2f4f6;
+  border-radius: 12rpx;
+  padding: 6rpx;
+}
+
+.segmented__item {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: #6b7280;
+  padding: 16rpx 0;
+  border-radius: 10rpx;
+}
+
+.segmented__item--on {
+  background-color: #ffffff;
+  color: var(--brand, #0a8f5b);
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(17, 24, 39, 0.08);
+}
+
+/* ---------- 分类面板（可拖动排序） ---------- */
+.sheet-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(17, 24, 39, 0.45);
+  z-index: 100;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background-color: #ffffff;
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 28rpx 24rpx calc(28rpx + env(safe-area-inset-bottom));
+  max-height: 76vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 20rpx;
+}
+
+.sheet__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2328;
+}
+
+.sheet__tip {
+  font-size: 20rpx;
+  color: #a2a8b3;
+}
+
+.sheet__body {
+  max-height: 52vh;
+}
+
+.sort-area {
+  width: 100%;
+  position: relative;
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1rpx solid #f2f4f6;
+  z-index: 1;
+}
+
+.sort-row--drag {
+  z-index: 9;
+  background-color: #f8fafb;
+  box-shadow: 0 6rpx 20rpx rgba(17, 24, 39, 0.12);
+  border-radius: 12rpx;
+}
+
+.sort-row__handle {
+  width: 56rpx;
+  text-align: center;
+  font-size: 34rpx;
+  color: #b0b5be;
+}
+
+.sort-row__name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1f2328;
+  padding: 26rpx 0;
+}
+
+.sort-row__del {
+  font-size: 22rpx;
+  color: #e5484d;
+  background-color: #fdecec;
+  padding: 8rpx 20rpx;
+  border-radius: 8rpx;
+  margin-right: 8rpx;
+}
+
+.sheet__foot {
+  display: flex;
+  align-items: center;
+  margin-top: 24rpx;
+}
+
+.sheet__add {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--brand, #0a8f5b);
+  background-color: var(--brand-soft, #e8f5ee);
+  padding: 22rpx 0;
+  border-radius: 14rpx;
+}
+
+.sheet__done {
+  margin-left: 20rpx;
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: #ffffff;
+  background-color: var(--brand, #0a8f5b);
+  padding: 22rpx 0;
+  border-radius: 14rpx;
+}

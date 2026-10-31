@@ -1,0 +1,28 @@
+<!-- 筛选条：快捷区间 + 自定义起止日期 -->
+<view class="filter">
+  <view class="filter__chips">
+    <view
+      wx:for="{{chips}}"
+      wx:key="key"
+      class="chip {{filter.type === item.key ? 'chip--active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onChipTap"
+    >{{item.text}}</view>
+  </view>
+
+  <view class="filter__custom" wx:if="{{filter.type === 'custom'}}">
+    <picker mode="date" value="{{filter.start}}" end="{{today}}" bindchange="onStartChange">
+      <view class="date-field">
+        <text class="date-field__label">起</text>
+        <text class="date-field__value">{{filter.start || '选择日期'}}</text>
+      </view>
+    </picker>
+    <text class="date-sep">至</text>
+    <picker mode="date" value="{{filter.end}}" end="{{today}}" bindchange="onEndChange">
+      <view class="date-field">
+        <text class="date-field__label">止</text>
+        <text class="date-field__value">{{filter.end || '选择日期'}}</text>
+      </view>
+    </picker>
+  </view>
+</view>

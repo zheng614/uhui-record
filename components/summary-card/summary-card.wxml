@@ -1,0 +1,30 @@
+<!-- 汇总卡片：总价 / 优惠 / 实付 -->
+<view class="summary">
+  <view class="summary__head">
+    <text class="summary__title">合计 · {{count}} 笔</text>
+    <text class="summary__caption" wx:if="{{caption}}">{{caption}}</text>
+  </view>
+
+  <view class="summary__grid">
+    <view class="summary__cell">
+      <text class="summary__label">总价</text>
+      <view class="summary__value">
+        <text class="summary__symbol">¥</text>{{totalText}}
+      </view>
+    </view>
+
+    <view class="summary__cell">
+      <text class="summary__label">优惠</text>
+      <view class="summary__value summary__value--discount">
+        <text class="summary__symbol">¥</text>{{discountText}}
+      </view>
+    </view>
+
+    <view class="summary__cell">
+      <text class="summary__label">实付</text>
+      <view class="summary__value summary__value--paid">
+        <text class="summary__symbol">¥</text>{{paidText}}
+      </view>
+    </view>
+  </view>
+</view>

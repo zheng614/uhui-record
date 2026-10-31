@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "分类统计",
+  "usingComponents": {
+    "summary-card": "/components/summary-card/summary-card",
+    "filter-bar": "/components/filter-bar/filter-bar"
+  }
+}

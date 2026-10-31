@@ -1,0 +1,114 @@
+<!-- 我的：签到 / 日历 / 主题 / 提建议 -->
+<view class="page page--mine theme-{{themeKey}}">
+  <!-- 签到卡 -->
+  <view class="checkin">
+    <view class="checkin__stats">
+      <view class="checkin__cell">
+        <text class="checkin__value num">{{streak}}</text>
+        <text class="checkin__label">连续签到（天）</text>
+      </view>
+      <view class="checkin__cell">
+        <text class="checkin__value num">{{points}}</text>
+        <text class="checkin__label">积分</text>
+      </view>
+      <view class="checkin__cell">
+        <text class="checkin__value num">{{memberLeft}}</text>
+        <text class="checkin__label">会员剩余（天）</text>
+      </view>
+    </view>
+    <view class="checkin__btn {{checkedToday ? 'checkin__btn--done' : ''}}" bindtap="onCheckIn">
+      {{checkedToday ? '今日已签到' : '签到 +1 积分'}}
+    </view>
+    <text class="checkin__tip">
+      每天签到 +1 积分，连续满 7 天额外送 1 天会员 · 还差 {{nextRewardDays}} 天拿到会员奖励
+    </text>
+  </view>
+
+  <!-- 日历：日期下面显示当天优惠金额 -->
+  <view class="card calendar">
+    <view class="calendar__head">
+      <text class="calendar__arrow" bindtap="onPrevMonth">‹</text>
+      <view class="calendar__title-group">
+        <text class="calendar__title">{{monthLabel}}</text>
+        <text class="calendar__sum">本月优惠合计 ¥{{monthDiscountText}}</text>
+      </view>
+      <text class="calendar__arrow" bindtap="onNextMonth">›</text>
+    </view>
+
+    <view class="calendar__week">
+      <text class="calendar__week-cell" wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="calendar__grid">
+      <view
+        class="calendar__cell {{item.blank ? 'calendar__cell--blank' : ''}} {{item.isToday ? 'calendar__cell--today' : ''}}"
+        wx:for="{{cells}}"
+        wx:key="key"
+        data-date="{{item.date}}"
+        bindtap="onDayTap"
+      >
+        <block wx:if="{{!item.blank}}">
+          <text class="calendar__day">{{item.day}}</text>
+          <text class="calendar__discount num" wx:if="{{item.hasDiscount}}">{{item.discountText}}</text>
+        </block>
+      </view>
+    </view>
+
+    <text class="calendar__tip">点日期查看当天账单 · 数字是当天的优惠金额</text>
+  </view>
+
+  <!-- 主题色 -->
+  <view class="card theme-card">
+    <text class="card__title">主题颜色</text>
+    <view class="theme-list">
+      <view
+        class="theme-item"
+        wx:for="{{themes}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="onThemeSelect"
+      >
+        <view class="theme-item__dot" style="background-color: {{item.brand}};">
+          <text class="theme-item__check" wx:if="{{themeKey === item.key}}">✓</text>
+        </view>
+        <text class="theme-item__name {{themeKey === item.key ? 'theme-item__name--on' : ''}}">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提建议 -->
+  <view class="card suggest">
+    <text class="card__title">提建议</text>
+    <textarea
+      class="suggest__input"
+      placeholder="想要什么功能、哪里不好用，都可以告诉我"
+      placeholder-class="suggest__placeholder"
+      maxlength="200"
+      value="{{suggestion}}"
+      bindinput="onSuggestionInput"
+      auto-height
+    />
+
+    <!-- 真机微信里：点开就是和开发者的客服对话，消息直接进开发者后台 -->
+    <button
+      wx:if="{{canContact}}"
+      class="btn btn--primary suggest__btn"
+      open-type="contact"
+      session-from="uhui-suggestion"
+      bindtap="onContactTap"
+      hover-class="btn--active"
+    >发给开发者</button>
+
+    <!-- 开发者工具里没有客服会话，退化为复制 -->
+    <view wx:else class="btn btn--primary suggest__btn" bindtap="onCopySuggestion">复制后发给开发者</view>
+
+    <view class="suggest__row" wx:if="{{suggestCount > 0}}">
+      <text class="suggest__history">已在本地留档 {{suggestCount}} 条</text>
+      <text class="suggest__clear" bindtap="onClearSuggestions">清空</text>
+    </view>
+
+    <text class="suggest__tip">{{canContact ? '点上面按钮会打开和开发者的对话，把内容发送过去即可收到' : '开发者工具里无法打开客服会话，请复制后到真机微信里发送'}}</text>
+  </view>
+
+  <text class="page__foot">积分与会员权益筹备中，当前仅做记录</text>
+</view>

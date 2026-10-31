@@ -1,0 +1,188 @@
+/* 当日账单页（自定义导航栏） */
+.page--day {
+  padding: 0 24rpx 60rpx;
+}
+
+/* ---------- 自定义导航栏 ---------- */
+.navbar {
+  position: relative;
+  margin: 0 -24rpx;
+  background-color: #f4f6f8;
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+}
+
+.navbar__back {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 12rpx 8rpx 0;
+}
+
+.navbar__arrow {
+  font-size: 40rpx;
+  line-height: 1;
+  color: var(--brand, #0a8f5b);
+  margin-right: 4rpx;
+}
+
+.navbar__back-text {
+  font-size: 28rpx;
+  color: var(--brand, #0a8f5b);
+}
+
+.navbar__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2328;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 占位，让标题居中 */
+.navbar__placeholder {
+  width: 96rpx;
+}
+
+/* ---------- 当天合计 ---------- */
+.day-summary {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.day-summary__date {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.day-summary__row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 16rpx;
+}
+
+.day-summary__label {
+  font-size: 22rpx;
+  color: #a2a8b3;
+  margin-right: 8rpx;
+}
+
+.day-summary__value {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-right: 24rpx;
+}
+
+.day-summary__value--red {
+  color: #ff2b2b;
+}
+
+/* ---------- 账单列表（与首页保持一致的视觉语言） ---------- */
+.bill-list {
+  margin-top: 20rpx;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(17, 24, 39, 0.04);
+}
+
+.bill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f4f6f8;
+}
+
+.bill:last-child {
+  border-bottom: none;
+}
+
+.bill--hover {
+  background-color: #fafbfc;
+}
+
+.bill__left {
+  min-width: 0;
+  flex: 1;
+}
+
+.bill__title-row {
+  display: flex;
+  align-items: center;
+}
+
+.bill__tag {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--brand, #0a8f5b);
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+  margin-right: 12rpx;
+}
+
+.bill__title {
+  font-size: 28rpx;
+  color: #1f2328;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bill__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.bill__amounts {
+  display: flex;
+  align-items: baseline;
+}
+
+.bill__rate-tag {
+  flex-shrink: 0;
+  font-size: 20rpx;
+  color: var(--brand, #0a8f5b);
+  background-color: var(--brand-soft, #e8f5ee);
+  border-radius: 6rpx;
+  padding: 2rpx 8rpx;
+  margin-left: 10rpx;
+}
+
+.bill__action {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+}
+
+.bill__action--danger {
+  color: #e5484d;
+  background-color: #fdecec;
+}
+
+/* ---------- 补记入口 ---------- */
+.day-add {
+  margin-top: 24rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--brand, #0a8f5b);
+  background-color: var(--brand-soft, #e8f5ee);
+  padding: 24rpx 0;
+  border-radius: 999rpx;
+}
+
+.day-add--empty {
+  width: 300rpx;
+  margin-top: 24rpx;
+}

@@ -1,0 +1,15 @@
+{
+  "appid": "touristappid",
+  "libVersion": "3.17.6",
+  "projectname": "U惠记录",
+  "condition": {},
+  "setting": {
+    "urlCheck": false,
+    "coverView": true,
+    "compileHotReLoad": true,
+    "showShadowRootInWxmlPanel": true,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "useIsolateContext": true
+  }
+}
