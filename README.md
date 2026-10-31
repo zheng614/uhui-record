@@ -99,7 +99,7 @@ uhui-record/
 ### 提交前自检
 
 ```bash
-node scripts/check.js      # 零依赖，本地跑的就是 CI 跑的那一份
+node scripts/check.cjs      # 零依赖，本地跑的就是 CI 跑的那一份
 ```
 
 一次过查完：JSON/JS 语法、文件 BOM、`app.json` 页面文件是否齐全、`usingComponents` 路径是否存在、`project.config.json` 的 appid 是否为占位值、全仓库有没有真实 AppID 或 Windows 绝对路径。
@@ -196,7 +196,7 @@ Storage Key（带版本号，便于后续升级）：
 
 小程序发新版本时，微信会沿用**同一个 AppID** 下的本地 Storage，因此只要满足下面三条，用户升级后账单原样都在：
 
-1. **不调用 `wx.clearStorage()` / `wx.clearStorageSync()`**（全项目没有这两处调用，`scripts/check.js` 也不会放过误加）；
+1. **不调用 `wx.clearStorage()` / `wx.clearStorageSync()`**（全项目没有这两处调用，`scripts/check.cjs` 也不会放过误加）；
 2. **不改 Storage Key 的名字**（`uhui_bills_v1`、`uhui_categories_v1` 等，见上一节）；
 3. **新字段只补不删**：`utils/store.js` 的 `normalizeBill()` 会在读取时把老账单补齐成最新结构（缺 `discountType` 就按满减算），`initStorage()` 在启动时做一次迁移，且迁移只写不删、旧 key 也保留作备份。
 

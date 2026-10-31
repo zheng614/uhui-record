@@ -15,7 +15,7 @@ cp project.private.config.example.json project.private.config.json   # 想把项
 ## 二、提交前自检
 
 ```bash
-node scripts/check.js
+node scripts/check.cjs
 ```
 
 零依赖脚本，本地跑的就是 CI（`.github/workflows/ci.yml`）跑的那一份，一次过查完：

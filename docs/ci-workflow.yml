@@ -6,7 +6,7 @@
 #   而普通 `repo` 权限的 token 会被 GitHub 以 404 拒绝，所以这里留一份可复制的原文，
 #   方便任何人（或在网页端手动新建文件）一键启用。
 #
-# 启用后：每次 push 到 main、以及每个 PR，都会自动跑 `node scripts/check.js`。
+# 启用后：每次 push 到 main、以及每个 PR，都会自动跑 `node scripts/check.cjs`。
 
 name: CI
 
@@ -37,4 +37,4 @@ jobs:
           node-version: 20
 
       - name: 自检（JSON / JS 语法、页面完整性、隐私红线）
-        run: node scripts/check.js
+        run: node scripts/check.cjs

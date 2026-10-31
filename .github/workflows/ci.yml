@@ -27,4 +27,4 @@ jobs:
           node-version: 20
 
       - name: 自检（JSON / JS 语法、页面完整性、隐私红线）
-        run: node scripts/check.js
+        run: node scripts/check.cjs

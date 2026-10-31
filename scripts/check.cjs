@@ -1,9 +1,14 @@
-#!/usr/bin/env node
 /**
  * U惠记录 · 仓库自检脚本（零依赖）
  * ------------------------------------------------------------------
- * 本地直接跑：node scripts/check.js
+ * 本地直接跑：node scripts/check.cjs
  * CI 里也跑这一份（.github/workflows/ci.yml），保证「本地能过 = CI 能过」
+ *
+ * 为什么文件名是 .cjs 而不是 .js：
+ *   微信开发者工具会把小程序目录下所有 .js 当小程序源码编译，
+ *   而本脚本是 Node 脚本（用了 fs / path / process），
+ *   留成 .js 会被开发者工具报「invalid file: scripts/check.js, 1:0」。
+ *   改成 .cjs 后 Node 仍按 CommonJS 执行，开发者工具则直接忽略。
  *
  * 检查项：
  *   1. 所有 .json 语法合法
@@ -167,7 +172,7 @@ function checkNoSecrets(files) {
   const winPathRx = /(?:^|[\s"'(=])[A-Za-z]:[\\/]/
   for (const file of files) {
     if (LOCAL_ONLY.has(path.basename(file))) continue
-    if (!/\.(js|json|wxml|wxss|md|yml|yaml)$/.test(file)) continue
+    if (!/\.(js|cjs|json|wxml|wxss|md|yml|yaml)$/.test(file)) continue
     const text = fs.readFileSync(file, 'utf8')
     const hits = text.match(appIdRx)
     if (hits) {
@@ -186,7 +191,7 @@ function main() {
 
   const jsonFiles = byExt('.json')
   checkJson(jsonFiles)
-  checkJs(byExt('.js'))
+  checkJs(files.filter((f) => f.endsWith('.js') || f.endsWith('.cjs')))
   checkTemplates(files.filter((f) => f.endsWith('.wxml') || f.endsWith('.wxss')))
 
   const jsonMap = new Map()

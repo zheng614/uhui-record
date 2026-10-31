@@ -1,7 +1,21 @@
 {
   "description": "U惠记录 - 个人账单记账小程序（纯前端，数据存本地 Storage）",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "scripts" },
+      { "type": "folder", "value": "docs" },
+      { "type": "folder", "value": ".github" },
+      { "type": "folder", "value": "shots" },
+      { "type": "file", "value": "README.md" },
+      { "type": "file", "value": "LICENSE" },
+      { "type": "file", "value": "CONTRIBUTING.md" },
+      { "type": "file", "value": ".gitignore" },
+      { "type": "file", "value": ".gitattributes" },
+      { "type": "suffix", "value": ".md" },
+      { "type": "suffix", "value": ".cjs" },
+      { "type": "suffix", "value": ".yml" },
+      { "type": "suffix", "value": ".csv" }
+    ],
     "include": []
   },
   "setting": {
