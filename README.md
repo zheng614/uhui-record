@@ -3,7 +3,7 @@
 [![CI](https://github.com/zheng614/uhui-record/actions/workflows/ci.yml/badge.svg)](https://github.com/zheng614/uhui-record/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-个人账单记账工具，**纯前端**，所有数据保存在小程序本地 Storage，不需要后端服务。
+U惠记录：个人账单记账工具，**纯前端**，记账的同时把优惠也记下来。每笔账写清总价、优惠方式（满减多少 / 打几折）、实付，优惠金额单独标红；主页、分类合计、日历都在告诉你这个月靠优惠省了多少钱。
 
 ---
 
