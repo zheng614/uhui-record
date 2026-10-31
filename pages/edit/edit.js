@@ -2,8 +2,14 @@
  * 记一笔 / 编辑账单
  * ------------------------------------------------------------------
  * 支持两种优惠方式：
- *   · 满减：总价 - 优惠 = 实付（可手动改实付，改完停止自动联动）
+ *   · 满减：总价 - 优惠 = 实付
  *   · 折扣：总价 × 折扣 = 实付（如 100 × 0.8 = 80，输入 8 表示 8 折）
+ *
+ * 三个金额「任意填两个，自动算出第三个」：
+ *   · 满减：总价 / 优惠金额 / 实付
+ *   · 折扣：总价 / 折扣（几折）/ 实付
+ * 规则：你最后修改的字段 + 它之外最近动过的字段作为已知条件，
+ *       第三个数自动填好。所以改优惠会立刻改实付，改实付会反推优惠。
  *
  * 分类下拉改为「分类面板」：点分类行打开面板，面板里可以直接拖动排序
  * （每行左侧 ⠿ 手柄）、新增分类、删除分类、点名称选用。
@@ -31,7 +37,6 @@ Page({
     discountInput: '',
     rateInput: '',
     paidInput: '',
-    autoPaid: true,
     previewText: '',
 
     /* 分类 */
@@ -76,8 +81,7 @@ Page({
         discountInput: discountType === 'minus' ? money.format(bill.discountCents) : '',
         rateInput: discountType === 'rate' && bill.discountRate ? String(bill.discountRate) : '',
         paidInput: money.format(bill.paidCents),
-        note: bill.note || '',
-        autoPaid: false // 老数据以保存时的实付为准
+        note: bill.note || ''
       })
       this.loadCategory(bill.categoryId, true)
     } else {
@@ -256,71 +260,177 @@ Page({
 
   onTotalInput(e) {
     this.setData({ totalInput: e.detail.value })
-    this.syncPaid()
+    this.relink('total')
   },
 
-  /** 切换优惠方式：满减 <-> 折扣 */
+  /**
+   * 切换优惠方式：满减 <-> 折扣
+   * ------------------------------------------------------------------
+   * 切换时不预填数字（折扣框默认显示 0），但会把已填的金额换算过去：
+   *   · 切到折扣：若总价、实付都有值 -> 反算出真实折扣（如 8 表示 8 折）
+   *   · 切到满减：若总价、实付都有值 -> 反算出优惠金额
+   * 只有确实能算出来才填，避免出现凭空的「8 折」。
+   */
   onDiscountTypeChange(e) {
     const type = e.currentTarget.dataset.type === 'rate' ? 'rate' : 'minus'
     if (type === this.data.discountType) return
-    this.setData({ discountType: type, autoPaid: true })
-    this.syncPaid()
+
+    const total = money.toCents(this.data.totalInput)
+    const paid = money.toCents(this.data.paidInput)
+    const patch = { discountType: type }
+
+    if (type === 'rate') {
+      // 反算折扣；算不出来就留空，让用户自己填（不会假装是 8 折）
+      if (total > 0 && paid > 0) {
+        const rate = Math.round((paid / total) * 10 * 100) / 100
+        patch.rateInput = rate > 0 && rate <= 10 ? String(rate) : ''
+      } else {
+        patch.rateInput = ''
+      }
+    } else {
+      if (total > 0) {
+        patch.discountInput = money.format(Math.max(0, total - paid))
+      } else {
+        patch.discountInput = ''
+      }
+    }
+
+    this.setData(patch)
+    this.updatePreview()
   },
 
   onDiscountInput(e) {
     this.setData({ discountInput: e.detail.value })
-    this.syncPaid()
+    this.relink('discount')
   },
 
   onRateInput(e) {
     this.setData({ rateInput: e.detail.value })
-    this.syncPaid()
+    this.relink('rate')
   },
 
-  /** 手动输入实付：关闭自动计算（仅满减模式支持） */
+  /** 实付也可以手填：填完会反推优惠（满减算金额、折扣算几折） */
   onPaidInput(e) {
-    this.setData({ paidInput: e.detail.value, autoPaid: false })
-    this.updatePreview()
+    this.setData({ paidInput: e.detail.value })
+    this.relink('paid')
   },
 
-  /** 恢复自动联动 */
-  onRestoreAuto() {
-    this.setData({ autoPaid: true })
-    this.syncPaid()
+  /* ==================== 三向联动 ==================== */
+
+  /** 当前模式下的「优惠字段」名：满减是 discount，折扣是 rate */
+  discountField() {
+    return this.data.discountType === 'rate' ? 'rate' : 'discount'
   },
 
-  /** 按当前优惠方式计算三个金额（单位：分） */
+  /** 字段是否已填（空字符串视为没填） */
+  hasField(field) {
+    const d = this.data
+    if (field === 'total') return d.totalInput !== ''
+    if (field === 'discount') return d.discountInput !== ''
+    if (field === 'rate') return d.rateInput !== ''
+    return d.paidInput !== ''
+  },
+
+  /**
+   * 输入联动：任意填两项，自动算出第三项
+   * ------------------------------------------------------------------
+   * 以「总价」为锚点（最稳定的值），规则如下：
+   *   · 改了总价     -> 有优惠就重算实付，没优惠但有实付就重算优惠
+   *   · 改了优惠     -> 有总价算实付，没有总价但填了实付就算总价
+   *   · 改了实付     -> 有总价算优惠（反推金额或几折），没有总价但有优惠就算总价
+   * 这样「改优惠立刻改实付」「改实付反推优惠」都符合直觉，总价不会莫名其妙被改掉。
+   * @param {string} edited 刚编辑的字段：total / discount / rate / paid
+   */
+  relink(edited) {
+    const discField = this.discountField()
+    let pair = null
+
+    if (edited === 'total') {
+      if (this.hasField(discField)) pair = ['total', discField]
+      else if (this.hasField('paid')) pair = ['total', 'paid']
+    } else if (edited === discField) {
+      if (this.hasField('total')) pair = ['total', discField]
+      else if (this.hasField('paid')) pair = [discField, 'paid']
+    } else {
+      if (this.hasField('total')) pair = ['total', 'paid']
+      else if (this.hasField(discField)) pair = [discField, 'paid']
+    }
+
+    if (!pair || !this.hasField(edited)) {
+      this.updatePreview()
+      return
+    }
+
+    const solved = this.solvePair(pair[0], pair[1])
+    if (!solved) {
+      this.updatePreview()
+      return
+    }
+
+    const patch = {}
+    patch[`${solved.field}Input`] = solved.text
+    this.setData(patch, () => this.updatePreview())
+  },
+
+  /**
+   * 已知两个金额字段，算出第三个
+   * @param {string} a 字段名
+   * @param {string} b 字段名
+   * @returns {{field:string, text:string}|null}
+   */
+  solvePair(a, b) {
+    const d = this.data
+    const has = (name) => a === name || b === name
+
+    if (d.discountType === 'rate') {
+      const total = money.toCents(d.totalInput)
+      const paid = money.toCents(d.paidInput)
+      const rate = parseFloat(d.rateInput) || 0
+
+      if (has('total') && has('rate')) {
+        if (rate <= 0 || total <= 0) return null
+        return { field: 'paid', text: money.format(Math.round((total * rate) / 10)) }
+      }
+      if (has('total') && has('paid')) {
+        if (total <= 0) return null
+        const value = Math.round((paid / total) * 10 * 100) / 100
+        return { field: 'rate', text: value > 0 ? String(value) : '' }
+      }
+      if (has('rate') && has('paid')) {
+        if (rate <= 0) return null
+        return { field: 'total', text: money.format(Math.round((paid * 10) / rate)) }
+      }
+      return null
+    }
+
+    const total = money.toCents(d.totalInput)
+    const discount = money.toCents(d.discountInput)
+    const paid = money.toCents(d.paidInput)
+
+    if (has('total') && has('discount')) {
+      return { field: 'paid', text: money.format(Math.max(0, total - discount)) }
+    }
+    if (has('total') && has('paid')) {
+      return { field: 'discount', text: money.format(Math.max(0, total - paid)) }
+    }
+    if (has('discount') && has('paid')) {
+      return { field: 'total', text: money.format(discount + paid) }
+    }
+    return null
+  },
+
+  /**
+   * 读取当前三个金额（单位：分）
+   * 以「总价、实付」输入框为准，优惠金额由两者差值得到，保证保存的数据自洽
+   */
   computeAmounts() {
     const totalCents = money.toCents(this.data.totalInput)
-
-    if (this.data.discountType === 'rate') {
-      const rate = Number(this.data.rateInput)
-      const valid = rate > 0 && rate < 10.01
-      const paidCents = valid ? Math.round((totalCents * rate) / 10) : totalCents
-      return {
-        totalCents,
-        discountCents: Math.max(0, totalCents - paidCents),
-        paidCents
-      }
+    const paidCents = Math.max(0, money.toCents(this.data.paidInput))
+    return {
+      totalCents,
+      discountCents: Math.max(0, totalCents - paidCents),
+      paidCents
     }
-
-    const discountCents = money.toCents(this.data.discountInput)
-    const paidCents = this.data.autoPaid
-      ? Math.max(0, totalCents - discountCents)
-      : money.toCents(this.data.paidInput)
-    return { totalCents, discountCents, paidCents }
-  },
-
-  /** 自动算出实付并写回输入框 */
-  syncPaid() {
-    const { totalCents, paidCents } = this.computeAmounts()
-    const shouldSync = this.data.discountType === 'rate' || this.data.autoPaid
-    if (shouldSync) {
-      this.setData({
-        paidInput: this.data.totalInput === '' ? '' : money.format(paidCents)
-      })
-    }
-    this.updatePreview()
   },
 
   /** 底部实时算式预览 */

@@ -1,19 +1,16 @@
 /**
  * 我的
  * ------------------------------------------------------------------
- * 包含四块：
+ * 包含三块：
  *   1. 签到：每天 +1 积分，连续每满 7 天额外送 1 天会员（积分/会员权益暂定）
  *   2. 日历：每天日期下面用大红小字显示当天优惠总额，点日期进入当日账单
  *   3. 主题色：内置几种常见配色，选中后整站换色
- *   4. 提建议：把建议保存到本地并复制到剪贴板，粘贴发给开发者即可
  */
 const store = require('../../utils/store')
 const money = require('../../utils/money')
 const dateUtil = require('../../utils/date')
 const themeUtil = require('../../utils/theme')
 const checkin = require('../../utils/checkin')
-
-const FEEDBACK_KEY = 'uhui_feedback_v1'
 
 const WEEK_LABELS = ['日', '一', '二', '三', '四', '五', '六']
 
@@ -35,23 +32,7 @@ Page({
     monthLabel: '',
     weekLabels: WEEK_LABELS,
     cells: [],      // 日历格子（含月初空白）
-    monthDiscountText: '0.00',
-
-    /* 提建议 */
-    suggestion: '',
-    canContact: true,   // 真机微信里能拉起客服会话；开发者工具里不能
-    suggestCount: 0
-  },
-
-  onLoad() {
-    // 开发者工具（模拟器）没有客服会话，按钮退化为「复制」
-    let platform = ''
-    try {
-      platform = (wx.getSystemInfoSync().platform || '').toLowerCase()
-    } catch (e) {
-      platform = ''
-    }
-    this.setData({ canContact: platform !== 'devtools' })
+    monthDiscountText: '0.00'
   },
 
   onShow() {
@@ -62,13 +43,6 @@ Page({
       this.setData({ year: Number(today[0]), month: Number(today[1]) })
     }
     this.buildCalendar()
-    this.loadSuggestionCount()
-  },
-
-  /** 本地留档的建议条数 */
-  loadSuggestionCount() {
-    const list = wx.getStorageSync(FEEDBACK_KEY)
-    this.setData({ suggestCount: Array.isArray(list) ? list.length : 0 })
   },
 
   /* ==================== 签到 ==================== */
@@ -184,84 +158,5 @@ Page({
     const theme = themeUtil.setTheme(key)
     this.setData({ themeKey: theme.key })
     wx.showToast({ title: `已切换为${theme.name}`, icon: 'none' })
-  },
-
-  /* ==================== 提建议 ==================== */
-
-  onSuggestionInput(e) {
-    this.setData({ suggestion: e.detail.value })
-  },
-
-  /** 把建议存一份到本地（离线留档，也方便以后做「我的反馈」列表） */
-  saveSuggestionRecord(text) {
-    const list = wx.getStorageSync(FEEDBACK_KEY)
-    const records = Array.isArray(list) ? list : []
-    records.unshift({ id: Date.now(), text, at: new Date().toLocaleString('zh-CN') })
-    const next = records.slice(0, 50)
-    wx.setStorageSync(FEEDBACK_KEY, next)
-    this.setData({ suggestCount: next.length })
-  },
-
-  /**
-   * 点「发给开发者」（button open-type="contact"）
-   * ------------------------------------------------------------------
-   * 这个按钮由微信直接拉起「客服会话」，用户在里面发的消息会进
-   * 小程序后台的客服工作台，开发者用自己的微信就能收到，不需要服务器。
-   * 这里额外做两件事：本地留档 + 把文字复制好，方便用户直接粘贴发送。
-   */
-  onContactTap() {
-    const text = (this.data.suggestion || '').trim()
-    if (!text) {
-      wx.showToast({ title: '先写点建议吧', icon: 'none' })
-      return
-    }
-
-    this.saveSuggestionRecord(text)
-    wx.setClipboardData({
-      data: text,
-      success: () => {
-        this.setData({ suggestion: '' })
-        wx.showToast({ title: '已复制，粘贴发送即可', icon: 'none' })
-      }
-    })
-  },
-
-  /** 开发者工具里没有客服会话：保存 + 复制，并说明怎么发 */
-  onCopySuggestion() {
-    const text = (this.data.suggestion || '').trim()
-    if (!text) {
-      wx.showToast({ title: '先写点建议吧', icon: 'none' })
-      return
-    }
-
-    this.saveSuggestionRecord(text)
-    wx.setClipboardData({
-      data: text,
-      success: () => {
-        this.setData({ suggestion: '' })
-        wx.showModal({
-          title: '已复制建议内容',
-          content: '开发者工具的模拟器打不开客服会话。用手机微信打开小程序，在「我的 → 提建议」点「发给开发者」，就能直接对话；或者把刚复制的内容发给开发者。',
-          showCancel: false,
-          confirmText: '知道了'
-        })
-      }
-    })
-  },
-
-  /** 清空本地留档 */
-  onClearSuggestions() {
-    wx.showModal({
-      title: '清空本地建议记录？',
-      content: '只删除本地留档，不影响已经发给开发者的内容。',
-      confirmText: '清空',
-      confirmColor: '#e5484d',
-      success: (res) => {
-        if (!res.confirm) return
-        wx.setStorageSync(FEEDBACK_KEY, [])
-        this.setData({ suggestCount: 0 })
-        wx.showToast({ title: '已清空', icon: 'success' })
-      }
-    })
   }
 })

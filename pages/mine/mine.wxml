@@ -1,4 +1,4 @@
-<!-- 我的：签到 / 日历 / 主题 / 提建议 -->
+<!-- 我的：签到 / 日历 / 主题 -->
 <view class="page page--mine theme-{{themeKey}}">
   <!-- 签到卡 -->
   <view class="checkin">
@@ -74,40 +74,6 @@
         <text class="theme-item__name {{themeKey === item.key ? 'theme-item__name--on' : ''}}">{{item.name}}</text>
       </view>
     </view>
-  </view>
-
-  <!-- 提建议 -->
-  <view class="card suggest">
-    <text class="card__title">提建议</text>
-    <textarea
-      class="suggest__input"
-      placeholder="想要什么功能、哪里不好用，都可以告诉我"
-      placeholder-class="suggest__placeholder"
-      maxlength="200"
-      value="{{suggestion}}"
-      bindinput="onSuggestionInput"
-      auto-height
-    />
-
-    <!-- 真机微信里：点开就是和开发者的客服对话，消息直接进开发者后台 -->
-    <button
-      wx:if="{{canContact}}"
-      class="btn btn--primary suggest__btn"
-      open-type="contact"
-      session-from="uhui-suggestion"
-      bindtap="onContactTap"
-      hover-class="btn--active"
-    >发给开发者</button>
-
-    <!-- 开发者工具里没有客服会话，退化为复制 -->
-    <view wx:else class="btn btn--primary suggest__btn" bindtap="onCopySuggestion">复制后发给开发者</view>
-
-    <view class="suggest__row" wx:if="{{suggestCount > 0}}">
-      <text class="suggest__history">已在本地留档 {{suggestCount}} 条</text>
-      <text class="suggest__clear" bindtap="onClearSuggestions">清空</text>
-    </view>
-
-    <text class="suggest__tip">{{canContact ? '点上面按钮会打开和开发者的对话，把内容发送过去即可收到' : '开发者工具里无法打开客服会话，请复制后到真机微信里发送'}}</text>
   </view>
 
   <text class="page__foot">积分与会员权益筹备中，当前仅做记录</text>

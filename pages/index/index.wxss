@@ -61,25 +61,29 @@
   margin-bottom: 8rpx;
 }
 
+/* 备注：字号是分类徽章的一半，弱化成补充信息 */
 .bill__title {
-  font-size: 30rpx;
-  color: #1f2328;
+  font-size: 17rpx;
+  color: #6b7280;
   font-weight: 500;
   max-width: 300rpx;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin-top: -2rpx;
 }
 
+/* 分类：首页最醒目的标签 */
 .bill__tag {
   flex-shrink: 0;
-  font-size: 22rpx;
-  font-weight: 600;
+  font-size: 34rpx;
+  line-height: 1.25;
+  font-weight: 700;
   color: #ffffff;
   background-color: var(--brand, #0a8f5b);
-  border-radius: 8rpx;
-  padding: 4rpx 14rpx;
-  margin-right: 12rpx;
+  border-radius: 10rpx;
+  padding: 6rpx 18rpx;
+  margin-right: 14rpx;
 }
 
 /* 折扣角标：仅折扣单显示，例如「8折」 */
